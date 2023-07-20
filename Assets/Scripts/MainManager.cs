@@ -12,6 +12,8 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    private DataManager dataManager;
     
     private bool m_Started = false;
     private int m_Points;
@@ -36,6 +38,9 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        dataManager = FindObjectOfType<DataManager>();
+        AddPoint(0);
     }
 
     private void Update()
@@ -65,7 +70,11 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        if (dataManager != null) {
+            ScoreText.text = $"Score : {m_Points} Name: {dataManager.PlayerName}";
+        } else {
+            ScoreText.text = $"Score : {m_Points}";
+        }
     }
 
     public void GameOver()
