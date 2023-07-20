@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
 
     private DataManager dataManager;
@@ -41,6 +42,7 @@ public class MainManager : MonoBehaviour
 
         dataManager = FindObjectOfType<DataManager>();
         AddPoint(0);
+        BestScoreText.text = $"Best Score : {dataManager?.BestScore} Name : {dataManager?.BestScorePlayerName}";
     }
 
     private void Update()
@@ -70,16 +72,13 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        if (dataManager != null) {
-            ScoreText.text = $"Score : {m_Points} Name: {dataManager.PlayerName}";
-        } else {
-            ScoreText.text = $"Score : {m_Points}";
-        }
+        ScoreText.text = $"Score : {m_Points} Name: {dataManager?.PlayerName}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        dataManager?.SaveBestScoreIfNeeded(m_Points);
     }
 }
